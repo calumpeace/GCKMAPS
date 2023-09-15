@@ -11,8 +11,8 @@
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         #map {
-            width: 1593px;
-            height: 795px;
+            width: 1605px;
+            height: 948px;
         }
         </style>
         <title></title>
@@ -52,7 +52,7 @@
         }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[50.13600223422373,-5.367989415372921],[53.203250886444714,4.5594142392609625]]);
+        }).fitBounds([[50.50949051132446,-4.154090742847333],[53.07672314819201,2.8818071250641912]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -324,10 +324,10 @@
 
         function style_ClustersReprojected_2_0(feature) {
             switch(String(feature.properties['Stage'])) {
-                case 'Core':
+                case 'Advanced':
                     return {
                 pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
+                radius: 9.9,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -336,7 +336,55 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(196,222,24,1.0)',
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Core':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Emerging':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Existing':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
                 interactive: true,
             }
                     break;
@@ -352,7 +400,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(180,150,0,1.0)',
+                fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
@@ -368,7 +416,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,117,23,1.0)',
+                fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
@@ -384,7 +432,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(114,229,168,1.0)',
+                fillColor: 'rgba(19,233,229,1.0)',
                 interactive: true,
             }
                     break;
@@ -392,10 +440,10 @@
         }
         function style_ClustersReprojected_2_1(feature) {
             switch(String(feature.properties['Stage'])) {
-                case 'Core':
+                case 'Advanced':
                     return {
                 pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
+                radius: 10.8,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -404,7 +452,55 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(72,129,41,1.0)',
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Core':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Emerging':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Existing':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
                 interactive: true,
             }
                     break;
@@ -420,7 +516,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(180,150,0,1.0)',
+                fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
@@ -436,7 +532,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,117,23,1.0)',
+                fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
@@ -452,7 +548,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(114,229,168,1.0)',
+                fillColor: 'rgba(19,233,229,1.0)',
                 interactive: true,
             }
                     break;
@@ -504,7 +600,7 @@
                 feature: layer.feature,
                 variables: {}
             };
-            layer.bindTooltip((layer.feature.properties['Cluster Name'] !== null?String('<div style="color: #323232; font-size: 6pt; font-weight: bold; font-family: \'Arial\', sans-serif;">' + layer.feature.properties['Cluster Name']) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_ClustersReprojected_2'});
+            layer.bindTooltip((exp_label_ClustersReprojected_2_eval_expression(context) !== null?String('<div style="color: #323232; font-size: 6pt; font-weight: bold; font-family: \'Arial\', sans-serif;">' + exp_label_ClustersReprojected_2_eval_expression(context)) + '</div>':''), {permanent: true, offset: [-0, -16], className: 'css_ClustersReprojected_2'});
             labels.push(layer);
             totalMarkers += 1;
               layer.added = true;
