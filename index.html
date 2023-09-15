@@ -8,10 +8,11 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         #map {
             width: 1130px;
-            height: 787px;
+            height: 948px;
         }
         </style>
         <title></title>
@@ -30,15 +31,43 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
         <script src="data/county_region_1.js"></script>
         <script src="data/ClustersReprojected_2.js"></script>
         <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
         var map = L.map('map', {
             zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[50.23389100261804,-3.1563834311008563],[52.942400877738365,3.1101989017758993]]);
+        }).fitBounds([[49.86770575455464,-2.7172208204713706],[52.788411217213564,2.8587011463830443]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
@@ -56,9 +85,17 @@
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
         function pop_county_region_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<table>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>NAME</strong><br />' + (feature.properties['NAME'] !== null ? autolinker.link(feature.properties['NAME'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['AREA_CODE'] !== null ? autolinker.link(feature.properties['AREA_CODE'].toLocaleString()) : '') + '</td>\
@@ -233,6 +270,14 @@
         bounds_group.addLayer(layer_county_region_1);
         map.addLayer(layer_county_region_1);
         function pop_ClustersReprojected_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['No.'] !== null ? autolinker.link(feature.properties['No.'].toLocaleString()) : '') + '</td>\
@@ -279,10 +324,10 @@
 
         function style_ClustersReprojected_2_0(feature) {
             switch(String(feature.properties['Stage'])) {
-                case 'Core':
+                case 'Advanced':
                     return {
                 pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
+                radius: 9.9,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -291,7 +336,55 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(196,222,24,1.0)',
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Core':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Emerging':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Existing':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 9.9,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
                 interactive: true,
             }
                     break;
@@ -323,90 +416,10 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,117,23,1.0)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(114,229,168,1.0)',
-                interactive: true,
-            }
-                    break;
-                case '0':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(41,136,225,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Advanced':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(196,222,24,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Emerging':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
                 fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
-                case 'Existing':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(196,222,24,1.0)',
-                interactive: true,
-            }
-                    break;
                 default:
                     return {
                 pane: 'pane_ClustersReprojected_2',
@@ -419,7 +432,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(204,123,18,1.0)',
+                fillColor: 'rgba(19,233,229,1.0)',
                 interactive: true,
             }
                     break;
@@ -427,10 +440,10 @@
         }
         function style_ClustersReprojected_2_1(feature) {
             switch(String(feature.properties['Stage'])) {
-                case 'Core':
+                case 'Advanced':
                     return {
                 pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
+                radius: 10.8,
                 opacity: 1,
                 color: 'rgba(0,0,0,1.0)',
                 dashArray: '',
@@ -439,7 +452,55 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(72,129,41,1.0)',
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Core':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Emerging':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,99,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Existing':
+                    return {
+                pane: 'pane_ClustersReprojected_2',
+                radius: 10.8,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(112,139,39,1.0)',
                 interactive: true,
             }
                     break;
@@ -471,90 +532,10 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(205,117,23,1.0)',
-                interactive: true,
-            }
-                    break;
-                default:
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(114,229,168,1.0)',
-                interactive: true,
-            }
-                    break;
-                case '0':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(41,136,225,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Advanced':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(72,129,41,1.0)',
-                interactive: true,
-            }
-                    break;
-                case 'Emerging':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 10.8,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
                 fillColor: 'rgba(255,255,99,1.0)',
                 interactive: true,
             }
                     break;
-                case 'Existing':
-                    return {
-                pane: 'pane_ClustersReprojected_2',
-                radius: 9.9,
-                opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(72,129,41,1.0)',
-                interactive: true,
-            }
-                    break;
                 default:
                     return {
                 pane: 'pane_ClustersReprojected_2',
@@ -567,7 +548,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(204,123,18,1.0)',
+                fillColor: 'rgba(19,233,229,1.0)',
                 interactive: true,
             }
                     break;
